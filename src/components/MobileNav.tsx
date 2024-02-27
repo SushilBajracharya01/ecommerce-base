@@ -1,11 +1,11 @@
 "use client"
 
-import { NAVLINKS } from "@/app/Navbar/Navbar";
 import { Dialog, Tab, Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
 import Navlink from "./Navlink";
 import Link from "next/link";
+import { NAVLINKS } from "@/app/Navbar/_data";
 
 export default function MobileNav() {
     const [open, setOpen] = useState(false);

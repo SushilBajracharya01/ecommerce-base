@@ -2,8 +2,8 @@ import FullDetailCard from "@/components/FullDetailCard"
 
 export default function OurCollectionsPage() {
   return (
-    <main className="max-w-2xl lg:max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto py-4 space-y-4">
-      <div className="border-b border-gray-200 pt-12 pb-10">
+    <div className="space-y-4">
+      <div className="border-b border-gray-200 pb-10">
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Our Collections</h1>
         <p className="mt-4 text-base text-gray-500">
           Checkout out the latest release of Basic Tees, new and improved with four openings!
@@ -61,6 +61,6 @@ export default function OurCollectionsPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   )
 }

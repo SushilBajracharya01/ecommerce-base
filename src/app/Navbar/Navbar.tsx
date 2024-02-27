@@ -2,19 +2,15 @@ import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import Navlink from "@/components/Navlink";
 import Logo from "@/components/Logo";
 import MobileNav from "@/components/MobileNav";
+import AccountOptions from "./AccountOptions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { NAVLINKS } from "./_data";
 
 
-export const NAVLINKS = [
-    {
-        label: 'Home',
-        href: '/'
-    },
-    {
-        label: 'Our Collections',
-        href: '/our-collections'
-    },
-]
-export default function Navbar() {
+async function Navbar() {
+    const session = await getServerSession(authOptions);
+
     return (
         <div className="bg-white">
             <header className="relative border-b border-gray-200">
@@ -44,15 +40,9 @@ export default function Navbar() {
                         </div>
 
                         <div className="flex items-center">
-                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                    Sign in
-                                </a>
-                                <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                    Create account
-                                </a>
-                            </div>
+                            <AccountOptions
+                                session={session}
+                            />
 
                             <div className="flex lg:ml-6">
                                 <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
@@ -69,7 +59,7 @@ export default function Navbar() {
                                         aria-hidden="true"
                                     />
                                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                                    <span className="sr-only">items in cart, view bag</span>
+                                    <span className="sr-only">items in cart, view cart</span>
                                 </a>
                             </div>
                         </div>
@@ -79,3 +69,5 @@ export default function Navbar() {
         </div>
     )
 }
+
+export default Navbar;

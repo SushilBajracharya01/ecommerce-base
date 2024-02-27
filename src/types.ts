@@ -8,3 +8,5 @@ export interface IProduct {
     imageAlt: string
     href: string
 }
+
+export type InputTypes = "email" | "text" | "number"

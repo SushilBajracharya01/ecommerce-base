@@ -17,7 +17,7 @@ export default async function ProductOverviewPage({ params }: IProductOverviewPa
     const product = await getProductDetail(product_id);
     if (!product) return <div></div>;
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 pt-12">
             <div className='lg:grid gap-4 lg:grid-cols-2 lg:gap-16'>
                 <ProductImagesPreview
                     images={product.images}

@@ -57,7 +57,7 @@ export default async function AddCollectionPage() {
     if (!session) redirect("/api/auth/signin?callbackUrl=/add-collection");
 
     return (
-        <div>
+        <div className="pt-12">
             <h1 className="text-lg mb-3 font-bold">
                 Add Collections
             </h1>

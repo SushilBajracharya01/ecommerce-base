@@ -65,7 +65,7 @@ export default async function AddProductPage() {
     if (!session) redirect("/api/auth/signin?callbackUrl=/add-product");
 
     return (
-        <div>
+        <div className="pt-12">
             <h1 className="text-lg mb-3 font-bold">
                 Add Products
             </h1>

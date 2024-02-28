@@ -5,7 +5,8 @@ const nextConfig = {
             { hostname: 'images.unsplash.com' },
             { hostname: 'res.cloudinary.com' },
             { hostname: 'lh3.googleusercontent.com' },
-            { hostname: 'plus.unsplash.com' }
+            { hostname: 'plus.unsplash.com' },
+            { hostname: 'tailwindui.com' },
         ]
     }
 };

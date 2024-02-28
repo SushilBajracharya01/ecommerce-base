@@ -2,18 +2,19 @@
 
 import { ComponentProps } from "react"
 import { useFormStatus } from "react-dom";
+import { VscLoading } from "react-icons/vsc";
 
 export default function FormSubmitButton({ children, className, ...props }: FormSubmitButtonProps) {
-    const {pending } = useFormStatus();
+    const { pending } = useFormStatus();
     return (
         <button
-        {...props}
-        className={` px-4 py-2 font-medium rounded-md shadow-sm text-white bg-primary ${className}`}
-        type="submit"
+            {...props}
+            className={` px-4 py-2 flex font-medium rounded-md shadow-sm text-white bg-primary ${className}`}
+            type="submit"
         >
             {
                 pending &&
-                <span className="loading loading-spinner loading-sm mr-2"></span>
+                <VscLoading className="animate-spin mr-2" />
             }
             {children}
         </button>

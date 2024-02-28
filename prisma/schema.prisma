@@ -11,6 +11,7 @@ model Collections {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   description String
   name        String
+  coverImage  String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   Product     Product[]

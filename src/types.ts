@@ -1,12 +1,16 @@
 export interface IProduct {
-    id: number
+    id: string
     name: string
     description: string
-    options: string
-    price: string
-    imageSrc: string
-    imageAlt: string
-    href: string
+    price: number
+    quantity: number
 }
 
-export type InputTypes = "email" | "text" | "number"
+export type InputTypes = "email" | "text" | "number" | "file"
+
+export interface ICollection {
+    id: string;
+    name: string
+    description: string
+    coverImage: string
+}

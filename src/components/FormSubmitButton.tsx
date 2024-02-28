@@ -9,7 +9,7 @@ export default function FormSubmitButton({ children, className, ...props }: Form
     return (
         <button
             {...props}
-            className={` px-4 py-2 flex font-medium rounded-md shadow-sm text-white bg-primary ${className}`}
+            className={` px-4 py-2 flex items-center font-medium rounded-md shadow-sm text-white bg-primary ${className}`}
             type="submit"
         >
             {

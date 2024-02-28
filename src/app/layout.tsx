@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`min-w-96 ${inter.className}`}>
         <SessionProvider >
           <Navbar />
-          <main className="px-4 pt-12 max-w-7xl mx-auto min-w-[300px]">
+          <main className="px-4 pt-12 pb-12 max-w-7xl mx-auto min-w-[300px]">
             {children}
           </main>
         </SessionProvider>

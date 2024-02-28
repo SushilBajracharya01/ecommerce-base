@@ -4,6 +4,8 @@ export interface IProduct {
     description: string
     price: number
     quantity: number
+    collectionId: string;
+    images: string[]
 }
 
 export type InputTypes = "email" | "text" | "number" | "file"

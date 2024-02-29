@@ -1,4 +1,4 @@
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import Navlink from "@/components/Navlink";
 import Logo from "@/components/Logo";
 import MobileNav from "@/components/MobileNav";
@@ -6,9 +6,12 @@ import AccountOptions from "./AccountOptions";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { NAVLINKS } from "./_data";
+import CartButton from "./CartButton";
+import { getCart } from "@/lib/db/cart";
 
 
 async function Navbar() {
+    const cart = await getCart();
     const session = await getServerSession(authOptions);
 
     return (
@@ -52,16 +55,8 @@ async function Navbar() {
                             </div>
 
                             {/* Cart */}
-                            <div className="ml-4 flow-root lg:ml-6">
-                                <a href="#" className="group -m-2 p-2 flex items-center">
-                                    <FaShoppingCart
-                                        className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                        aria-hidden="true"
-                                    />
-                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                                    <span className="sr-only">items in cart, view cart</span>
-                                </a>
-                            </div>
+                            <CartButton
+                                cart={cart} />
                         </div>
                     </div>
                 </nav>

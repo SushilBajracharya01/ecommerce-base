@@ -9,12 +9,12 @@ export default function Logo() {
             <Image
                 className="h-10 w-auto"
                 src={LogoPng}
-                alt="LionHeart"
+                alt="LionHearts"
                 width={48}
                 height={48}
             />
             <span className="font-bold">
-                LionHeart
+                LionHearts
             </span>
         </Link>
     )

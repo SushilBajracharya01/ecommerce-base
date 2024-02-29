@@ -1,23 +1,54 @@
+import AddToCartBtn from '@/components/AddToCartBtn';
 import ProductImagesPreview from '@/components/ProductImagesPreview'
 import { prisma } from '@/lib/db/prisma';
 import { formatPrice } from '@/lib/format';
 import React from 'react'
 import { FaHeart } from 'react-icons/fa'
+import { getProductFromCart, incrementProductQuantity } from './action';
+import ProductQuantityChanger from '@/components/ProductQuantityChanger';
+import { updateProductQuantity } from '@/app/cart/action';
+import NextBreadcrumb from '@/components/BreadCrumb';
 
 async function getProductDetail(productId: string) {
     const res = await prisma.product.findUnique({
         where: {
             id: productId
+        },
+        include: {
+            collection: true
         }
     })
     return res;
 }
+
 export default async function ProductOverviewPage({ params }: IProductOverviewPageProps) {
     const { product_id } = params;
     const product = await getProductDetail(product_id);
+    const productInCart = await getProductFromCart(product_id);
+
     if (!product) return <div></div>;
     return (
         <div className="space-y-4 pt-12">
+            <NextBreadcrumb
+                breadcrumbs={[
+                    {
+                        label: "Home",
+                        path: "/"
+                    },
+                    {
+                        label: "Collections",
+                        path: "/our-collections"
+                    },
+                    {
+                        label: product.collection.name,
+                        path: `/our-collections/${product.collectionId}`
+                    },
+                    {
+                        label: product.name,
+                        path: `/our-collections/${product.collectionId}/${product.name}`
+                    }
+                ]}
+            />
             <div className='lg:grid gap-4 lg:grid-cols-2 lg:gap-16'>
                 <ProductImagesPreview
                     images={product.images}
@@ -39,13 +70,22 @@ export default async function ProductOverviewPage({ params }: IProductOverviewPa
                             dangerouslySetInnerHTML={{ __html: product.description }}
                         />
 
+                        <div className='mt-10 space-x-4'>
+                            <span className='text-gray-500'>Quantity:</span>
+
+                            <ProductQuantityChanger
+                                productId={product.id}
+                                maxQuantity={product.quantity}
+                                updateProductQuantity={updateProductQuantity}
+                                quantity={productInCart?.quantity || 1}
+                            />
+                        </div>
+
                         <div className="mt-10 flex sm:flex-col1">
-                            <button
-                                type="submit"
-                                className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
-                            >
-                                Add to cart
-                            </button>
+                            <AddToCartBtn
+                                productId={product.id}
+                                incrementProductQuantity={incrementProductQuantity}
+                            />
 
                             <button
                                 type="button"

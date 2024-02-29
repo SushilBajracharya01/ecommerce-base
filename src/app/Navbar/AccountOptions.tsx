@@ -12,7 +12,7 @@ export default function AccountOptions({ session }: IAccountOptions) {
 
     if (user) {
         return (
-            <div className="dropdown dropdown-end">
+            <div className="z-10">
                 <Menu as={"div"} className="relative inline-block">
                     <Menu.Button>
                         <Image
@@ -47,7 +47,7 @@ export default function AccountOptions({ session }: IAccountOptions) {
     }
 
     return (
-        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+        <div className="z-10 hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
             <button onClick={() => signIn()} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                 Sign in
             </button>

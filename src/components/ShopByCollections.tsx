@@ -12,13 +12,13 @@ async function getCollections() {
 export default async function ShopByCollections() {
     const collections = await getCollections();
     return (
-        <section aria-labelledby="collections-heading" className="pt-24 pb-20 sm:pt-32">
+        <section aria-labelledby="collections-heading" className="pt-24 pb-24 sm:pt-32">
             <div className="px-4 sm:px-6 sm:flex sm:items-center sm:justify-between lg:px-8 xl:px-0">
                 <h2 id="collections-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
-                    Shop by collections
+                    Shop by Collections
                 </h2>
-                <a href="/our-collections" className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
-                    Browse all categories<span aria-hidden="true"> &rarr;</span>
+                <a href="/our-collections" className="hidden text-sm font-semibold text-primary hover:text-primaryLight sm:block">
+                    Browse all collections<span aria-hidden="true"> &rarr;</span>
                 </a>
             </div>
 
@@ -54,8 +54,8 @@ export default async function ShopByCollections() {
             </div>
 
             <div className="mt-6 px-4 sm:hidden">
-                <Link href={`/our-collections`} className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
-                    Browse all categories<span aria-hidden="true"> &rarr;</span>
+                <Link href={`/our-collections`} className="block text-sm font-semibold text-primary hover:text-primaryLight">
+                    Browse all collections<span aria-hidden="true"> &rarr;</span>
                 </Link>
             </div>
         </section>

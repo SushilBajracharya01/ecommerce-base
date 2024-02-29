@@ -24,13 +24,38 @@ model Product {
   name         String
   price        Int
   collectionId String      @db.ObjectId
-  collection   Collections @relation(fields: [collectionId], references: [id])
+  collection   Collections @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   quantity     Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  CartItem  CartItem[]
 
   @@map("products")
+}
+
+model Cart {
+  id    String     @id @default(auto()) @map("_id") @db.ObjectId
+  items CartItem[]
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  User       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String?  @db.ObjectId
+  isAssigned Boolean  @default(false)
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int
+  cartId    String  @db.ObjectId
+  Cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  @@map("cartitems")
 }
 
 model Account {
@@ -71,6 +96,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Cart          Cart[]
 
   @@map("users")
 }

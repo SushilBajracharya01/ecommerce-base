@@ -14,8 +14,6 @@ async function handleAddCollection(formData: FormData) {
 
     const session = await getServerSession(authOptions);
 
-    console.log(formData, 'formData')
-
     if (!session) {
         redirect("/api/auth/signin?callbackUrl=/add-collection");
     }
@@ -37,8 +35,6 @@ async function handleAddCollection(formData: FormData) {
             res(result);
         }).end(buffer)
     })
-
-    console.log(result, 'result')
 
     await prisma.collections.create({
         data: {

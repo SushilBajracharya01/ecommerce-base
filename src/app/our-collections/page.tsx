@@ -1,6 +1,6 @@
+import NextBreadcrumb from "@/components/BreadCrumb";
 import CollectionCard from "@/components/CollectionCard";
-import EmptyContent from "@/components/EmptyContent";
-import FullDetailCard from "@/components/FullDetailCard"
+import EmptyContent from  "@/components/EmptyContent";
 import { prisma } from "@/lib/db/prisma"
 import { ICollection } from "@/types";
 
@@ -14,6 +14,18 @@ export default async function OurCollectionsPage() {
   return (
     <div className="space-y-4 pt-12">
       <div className="border-b border-gray-200 pb-10">
+        <NextBreadcrumb
+          breadcrumbs={[
+            {
+              label: "Home",
+              path: "/"
+            },
+            {
+              label: "our collections",
+              path: "/our-collections"
+            }
+          ]}
+        />
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Our Collections</h1>
         <p className="mt-4 text-base text-gray-500">
           Checkout out the latest release of Basic Tees, new and improved with four openings!

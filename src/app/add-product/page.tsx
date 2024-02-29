@@ -13,7 +13,6 @@ async function handleAddProduct(formData: FormData) {
     "use server"
 
     const session = await getServerSession(authOptions);
-    console.log(formData, 'formData')
 
     if (!session) {
         redirect("/api/auth/signin?callbackUrl=/add-product");
@@ -29,7 +28,7 @@ async function handleAddProduct(formData: FormData) {
 
     let imageSrcs: string[] = [];
 
-    for(let i = 0; i< images.length; i++) {
+    for (let i = 0; i < images.length; i++) {
         const arrayBuffer = await images[i].arrayBuffer();
         const buffer = new Uint8Array(arrayBuffer);
         const result: any = await new Promise((res, rej) => {
@@ -45,16 +44,12 @@ async function handleAddProduct(formData: FormData) {
         throw new Error("Missing fields");
     }
 
-    try {
-        await prisma.product.create({
-            data: {
-                name, description, quantity, price, collectionId, images: imageSrcs
-            }
-        })
-    }
-    catch (error) {
-        console.log(error, 'erreror');
-    }
+    await prisma.product.create({
+        data: {
+            name, description, quantity, price, collectionId, images: imageSrcs
+        }
+    })
+
 
     redirect('/');
 }

@@ -1,18 +1,13 @@
-import { prisma } from "@/lib/db/prisma";
-import { IProduct } from "@/types";
+import { ShoppingCart, getCart } from "@/lib/db/cart";
+import { formatPrice } from "@/lib/format";
 import Image from "next/image";
-import { FaQuestionCircle } from "react-icons/fa";
-import { IoMdClock } from "react-icons/io";
-import { IoCheckboxSharp, IoCloseSharp } from "react-icons/io5";
-
-
-async function getProducts() {
-    const res = await prisma.product.findMany({})
-    return res;
-}
+import { removeProductFromCart, updateProductQuantity } from "./action";
+import ProductQuantityChanger from "@/components/ProductQuantityChanger";
+import RemoveProductFromCartBtn from "@/components/RemoveProductFromCartBtn";
+import Link from "next/link";
 
 export default async function Cart() {
-    const products: IProduct[] | [] = await getProducts();
+    const cart: ShoppingCart | null = await getCart();
 
     return (
         <div className="pt-12">
@@ -25,77 +20,64 @@ export default async function Cart() {
                     </h2>
 
                     <ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
-                        {products.map((product, productIdx) => (
-                            <li key={product.id} className="flex py-6 sm:py-10">
-                                <div className="flex-shrink-0">
-                                    <Image
-                                        src={product.images[0]}
-                                        alt={product.name}
-                                        width={96}
-                                        height={96}
-                                        className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
-                                    />
-                                </div>
+                        {cart?.items?.map((cartItem, productIdx) => {
+                            const { id, product, quantity } = cartItem;
+                            return (
+                                <li key={id} className="flex py-6 sm:py-10">
+                                    <div className="flex-shrink-0">
+                                        <Image
+                                            src={product.images[0]}
+                                            alt={product.name}
+                                            width={150}
+                                            height={150}
+                                            className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
+                                        />
+                                    </div>
 
-                                <div className="ml-4 flex-1 flex flex-col justify-between sm:ml-6">
-                                    <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-                                        <div>
-                                            <div className="flex justify-between">
-                                                <h3 className="text-sm">
-                                                    <a href={product.id} className="font-medium text-gray-700 hover:text-gray-800">
-                                                        {product.name}
-                                                    </a>
-                                                </h3>
+                                    <div className="ml-4 flex-1 flex flex-col justify-between sm:ml-6">
+                                        <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
+                                            <div className="space-y-2 sm:space-y-1">
+                                                <div className="flex justify-between">
+                                                    <h3 className="text-md font-medium">
+                                                        <Link href={`/our-collections/${product.collectionId}/${product.id}`} className="font-medium text-gray-800 hover:text-gray-800">
+                                                            {product.name}
+                                                        </Link>
+                                                    </h3>
+                                                </div>
+                                                <p className="mt-1 text-sm font-medium text-gray-600">
+                                                    Price:  {formatPrice(product.price)}
+                                                </p>
+                                                <p className="mt-1 text-sm font-medium text-gray-600">
+                                                    Total:  {formatPrice(product.price * quantity)}
+                                                </p>
                                             </div>
-                                            <div className="mt-1 flex text-sm">
-                                                {/* <p className="text-gray-500">{product.color}</p> */}
-                                                {/* {product.size ? (
-                                                    <p className="ml-4 pl-4 border-l border-gray-200 text-gray-500">{product.size}</p>
-                                                ) : null} */}
-                                            </div>
-                                            <p className="mt-1 text-sm font-medium text-gray-900">{product.price}</p>
-                                        </div>
 
-                                        <div className="mt-4 sm:mt-0 sm:pr-9">
-                                            <label htmlFor={`quantity-${productIdx}`} className="sr-only">
-                                                Quantity, {product.name}
-                                            </label>
-                                            <select
-                                                id={`quantity-${productIdx}`}
-                                                name={`quantity-${productIdx}`}
-                                                className="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            >
-                                                <option value={1}>1</option>
-                                                <option value={2}>2</option>
-                                                <option value={3}>3</option>
-                                                <option value={4}>4</option>
-                                                <option value={5}>5</option>
-                                                <option value={6}>6</option>
-                                                <option value={7}>7</option>
-                                                <option value={8}>8</option>
-                                            </select>
+                                            <div className="sm:pr-9 mt-4 sm:mt-0">
+                                                <label htmlFor={`quantity-${productIdx}`} className="sr-only">
+                                                    Quantity, {product.name}
+                                                </label>
 
-                                            <div className="absolute top-0 right-0">
-                                                <button type="button" className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500">
-                                                    <span className="sr-only">Remove</span>
-                                                    <IoCloseSharp className="h-5 w-5" aria-hidden="true" />
-                                                </button>
+                                                <span className="mr-2">
+                                                    Quantity:
+                                                </span>
+
+                                                <ProductQuantityChanger
+                                                    maxQuantity={product.quantity}
+                                                    quantity={quantity}
+                                                    productId={product.id}
+                                                    updateProductQuantity={updateProductQuantity}
+                                                />
+
+                                                <RemoveProductFromCartBtn
+                                                    productId={product.id}
+                                                    removeProductFromCart={removeProductFromCart}
+                                                />
                                             </div>
                                         </div>
                                     </div>
-
-                                    <p className="mt-4 flex text-sm text-gray-700 space-x-2">
-                                        {/* {product.inStock ? (
-                                            <IoCheckboxSharp className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
-                                        ) : (
-                                            <IoMdClock className="flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true" />
-                                        )}
-
-                                        <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span> */}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
+                                </li>
+                            )
+                        })}
                     </ul>
                 </section>
 
@@ -111,38 +93,26 @@ export default async function Cart() {
                     <dl className="mt-6 space-y-4">
                         <div className="flex items-center justify-between">
                             <dt className="text-sm text-gray-600">Subtotal</dt>
-                            <dd className="text-sm font-medium text-gray-900">$99.00</dd>
+                            <dd className="text-sm font-medium text-gray-900">
+                                {formatPrice(cart?.subTotal || 0)}
+                            </dd>
                         </div>
                         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                             <dt className="flex items-center text-sm text-gray-600">
-                                <span>Shipping estimate</span>
-                                <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                                    <span className="sr-only">Learn more about how shipping is calculated</span>
-                                    <FaQuestionCircle className="h-5 w-5" aria-hidden="true" />
-                                </a>
+                                <span>Discount</span>
                             </dt>
-                            <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-                        </div>
-                        <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                            <dt className="flex text-sm text-gray-600">
-                                <span>Tax estimate</span>
-                                <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                                    <span className="sr-only">Learn more about how tax is calculated</span>
-                                    <FaQuestionCircle className="h-5 w-5" aria-hidden="true" />
-                                </a>
-                            </dt>
-                            <dd className="text-sm font-medium text-gray-900">$8.32</dd>
+                            <dd className="text-sm font-medium text-gray-900">$0.00</dd>
                         </div>
                         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                             <dt className="text-base font-medium text-gray-900">Order total</dt>
-                            <dd className="text-base font-medium text-gray-900">$112.32</dd>
+                            <dd className="text-base font-medium text-gray-900">{formatPrice(cart?.subTotal || 0)}</dd>
                         </div>
                     </dl>
 
                     <div className="mt-6">
                         <button
                             type="submit"
-                            className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            className="w-full bg-primary border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-primaryLight focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary"
                         >
                             Checkout
                         </button>

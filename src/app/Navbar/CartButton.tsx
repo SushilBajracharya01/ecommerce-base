@@ -13,17 +13,17 @@ export default function CartButton({ cart }: ICartButtonProps) {
     const pathname = usePathname();
 
     return (
-        <div className="ml-4 flow-root lg:ml-6 z-10">
+        <div className="md:ml-4 flow-root lg:ml-6 z-10">
             <Menu as={"div"} className="relative inline-block">
                 <Menu.Button className={
                     classNames(
                         pathname === "/cart" ? "bg-primary" : "",
-                        "relative rounded-full p-2"
+                        "transition-colors text-gray-500 hover:bg-primaryLight hover:text-white relative rounded-full p-1 md:p-2"
                     )
                 } >
                     <FaShoppingCart
                         className={classNames(
-                            pathname === "/cart" ? "text-gray-50 group-hover:bg-primaryLight" : "text-gray-400 group-hover:text-gray-500",
+                            pathname === "/cart" && "text-gray-50 group-hover:bg-primaryLight",
                             "flex-shrink-0 h-6 w-6"
                         )}
                         aria-hidden="true"

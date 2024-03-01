@@ -1,42 +1,135 @@
+import NextBreadcrumb from "@/components/BreadCrumb";
+import CategoryFilterInSearch from "@/components/CategoryFilterInSearch";
+import EmptyContent from "@/components/EmptyContent";
 import FullDetailCard from "@/components/FullDetailCard"
+import PaginationBar from "@/components/PaginationBar";
 import { prisma } from "@/lib/db/prisma";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-async function getProducts() {
-  const res = await prisma.product.findMany({});
-  return res
+export function generateMetadata({ searchParams: { query } }: ISearchPageProps): Metadata {
+  return {
+    title: `Search: ${query ?? ""} - LionHearts`
+  }
 }
 
-export default async function SearchPage() {
-  const products = await getProducts();
+async function getFilteredProductsWithCount({ query, filter_collections, pageSize, currentPage }: IProductFilters) {
+  let collectionQuery = {
+    ...(filter_collections ? { collectionId: { in: filter_collections.split(",") } } : {})
+  }
+  const filter = {
+    where: {
+      OR: [
+        {
+          name: {
+            contains: query,
+            mode: 'insensitive'
+          },
+          ...collectionQuery
+        },
+        {
+          description: {
+            contains: query,
+            mode: 'insensitive'
+          },
+          ...collectionQuery
+        }
+      ]
+    },
+    orderBy: { id: 'desc' },
+    take: pageSize,
+    skip: (currentPage - 1) * pageSize,
+  };
+
+  return await prisma.$transaction([
+    prisma.product.findMany(filter),
+    prisma.product.count({ where: filter.where })
+  ])
+}
+
+export default async function SearchPage({ searchParams: { query, filter_collections, page = '1' } }: ISearchPageProps) {
+  const pageSize = 6;
+  const currentPage = parseInt(page);
+
+  const collections = await prisma.collections.findMany({});
+
+  const [products, totalItemCount] = await getFilteredProductsWithCount({
+    query,
+    filter_collections,
+    pageSize,
+    currentPage
+  });
+
+  const totalPages = Math.ceil(totalItemCount / pageSize);
+
   return (
     <div className="space-y-4 pt-12">
-      <div className="border-b border-gray-200 pb-10">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Our Collections</h1>
-        <p className="mt-4 text-base text-gray-500">
-          Checkout out the latest release of Basic Tees, new and improved with four openings!
-        </p>
+      <NextBreadcrumb
+        breadcrumbs={[
+          {
+            label: "Home",
+            path: "/"
+          },
+          {
+            label: "Search",
+            path: "/search"
+          }
+        ]}
+      />
+      <div className="border-b border-gray-200 pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Search {query ? <>results for <span className="text-primary">{query}</span></> : null}</h1>
       </div>
 
-      <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+      <div className="pt-8 pb-8 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
         <aside>
+          <CategoryFilterInSearch
+            page={page}
+            query={query}
+            queryCollections={filter_collections}
+            collections={collections}
+          />
         </aside>
 
 
         <section className="mt-6 lg:mt-0 col-span-1 lg:col-span-2 xl:col-span-3">
-          <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-            {
-              products.map(product => {
-                return (
-                  <FullDetailCard
-                    key={product.id}
-                    product={product}
-                  />
-                )
-              })
-            }
-          </div>
+          {
+            products.length === 0 ?
+              <EmptyContent
+                title={`Products with "${query}"`}
+              />
+              :
+              <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                {products.map(product => {
+                  return (
+                    <FullDetailCard
+                      key={product.id}
+                      product={product}
+                    />
+                  )
+                })
+                }
+              </div>
+          }
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </section>
       </div>
     </div>
   )
+}
+
+interface ISearchPageProps {
+  searchParams: {
+    query: string;
+    filter_collections: string;
+    page: string;
+  }
+}
+interface IProductFilters {
+  query: string,
+  filter_collections: string;
+  pageSize: number,
+  currentPage: number
 }

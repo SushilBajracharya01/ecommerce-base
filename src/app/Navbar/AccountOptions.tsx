@@ -12,7 +12,7 @@ export default function AccountOptions({ session }: IAccountOptions) {
 
     if (user) {
         return (
-            <div className="z-10">
+            <div className="hidden sm:block z-10">
                 <Menu as={"div"} className="relative inline-block">
                     <Menu.Button>
                         <Image
@@ -52,9 +52,9 @@ export default function AccountOptions({ session }: IAccountOptions) {
                 Sign in
             </button>
             <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-            <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+            <button onClick={() => signIn()} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                 Create account
-            </a>
+            </button>
         </div>
     )
 }

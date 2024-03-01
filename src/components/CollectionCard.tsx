@@ -21,7 +21,7 @@ export default function CollectionCard({
                 />
             </div>
             <h3 className="mt-4 text-base font-semibold text-gray-900">{collection.name}</h3>
-            <p className="mt-2 text-sm text-gray-500">{collection.description}</p>
+            <p className="mt-2 text-sm text-gray-500 line-clamp-5">{collection.description}</p>
         </Link>
     )
 }

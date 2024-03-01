@@ -39,7 +39,7 @@ export default async function Footer() {
                                     <ul role="list" className="mt-6 space-y-6">
                                         {collections?.map((collection) => (
                                             <li key={collection.name} className="text-sm">
-                                                <Link href={`/our-collections/${collection.id}`} className="text-gray-500 hover:text-gray-600">
+                                                <Link href={`/our-collections/${collection.id}`} className="text-gray-500 hover:text-primary">
                                                     {collection.name}
                                                 </Link>
                                             </li>
@@ -51,7 +51,7 @@ export default async function Footer() {
                                     <ul role="list" className="mt-6 space-y-6">
                                         {footerNavigation.company.map((item) => (
                                             <li key={item.name} className="text-sm">
-                                                <a href={item.href} className="text-gray-500 hover:text-gray-600">
+                                                <a href={item.href} className="text-gray-500 hover:text-primary" target={item.href === "#" ? "_self" : "_blank"}>
                                                     {item.name}
                                                 </a>
                                             </li>
@@ -64,7 +64,7 @@ export default async function Footer() {
                                 <ul role="list" className="mt-6 space-y-6">
                                     {footerNavigation.customerService.map((item) => (
                                         <li key={item.name} className="text-sm">
-                                            <a href={item.href} className="text-gray-500 hover:text-gray-600">
+                                            <a href={item.href} className="text-gray-500 hover:text-primary" target={item.href === "#" ? "_self" : "_blank"}>
                                                 {item.name}
                                             </a>
                                         </li>
@@ -102,7 +102,7 @@ export default async function Footer() {
                 </div>
 
                 <div className="border-t border-gray-100 py-10 text-center">
-                    <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} LionHearts, Inc. All rights reserved.</p>
+                    <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Sushil Bajracharya. All rights reserved.</p>
                 </div>
             </div>
         </footer>

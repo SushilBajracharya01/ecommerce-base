@@ -13,7 +13,7 @@ export default function Logo() {
                 width={48}
                 height={48}
             />
-            <span className="font-bold">
+            <span className="hidden sm:block font-bold">
                 LionHearts
             </span>
         </Link>

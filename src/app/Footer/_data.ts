@@ -1,27 +1,13 @@
 
 export const footerNavigation = {
-    products: [
-      { name: 'Bags', href: '#' },
-      { name: 'Tees', href: '#' },
-      { name: 'Objects', href: '#' },
-      { name: 'Home Goods', href: '#' },
-      { name: 'Accessories', href: '#' },
-    ],
     company: [
-      { name: 'Who we are', href: '#' },
-      { name: 'Sustainability', href: '#' },
-      { name: 'Press', href: '#' },
-      { name: 'Careers', href: '#' },
+      { name: 'Who we are', href: 'my-story' },
+      { name: 'Portfolio', href: 'https://sushilbajracharya.com.np/' },
       { name: 'Terms & Conditions', href: '#' },
       { name: 'Privacy', href: '#' },
     ],
     customerService: [
-      { name: 'Contact', href: '#' },
-      { name: 'Shipping', href: '#' },
-      { name: 'Returns', href: '#' },
-      { name: 'Warranty', href: '#' },
-      { name: 'Secure Payments', href: '#' },
+      { name: 'Contact', href: 'https://sushilbajracharya.com.np/p/contact' },
       { name: 'FAQ', href: '#' },
-      { name: 'Find a store', href: '#' },
     ],
   }

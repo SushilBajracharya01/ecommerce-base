@@ -1,14 +1,19 @@
 "use client"
 
-import { Dialog, Tab, Transition } from "@headlessui/react"
+import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
+import ProfilePicPlaceholder from '@/assets/profile-pic-placeholder.png';
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
 import Navlink from "./Navlink";
-import Link from "next/link";
 import { NAVLINKS } from "@/app/Navbar/_data";
+import { signIn, signOut } from "next-auth/react";
+import { Session } from "next-auth";
+import Image from "next/image";
 
-export default function MobileNav() {
+export default function MobileNav({ session }: IMobileNavProps) {
+    const user = session?.user;
     const [open, setOpen] = useState(false);
+
     return (
         <>
             <button
@@ -67,16 +72,46 @@ export default function MobileNav() {
                             </div>
 
                             <div className="border-t border-gray-200 py-6 px-4 space-y-4 text-sm">
-                                <div className="flow-root">
-                                    <Link href="#" className="-m-2 p-2 block font-medium text-gray-700">
-                                        Sign in
-                                    </Link>
-                                </div>
-                                <div className="flow-root">
-                                    <Link href="#" className="-m-2 p-2 block font-medium text-gray-700">
-                                        Create account
-                                    </Link>
-                                </div>
+                                {
+                                    user ?
+                                        (
+                                            <>
+                                                <div className="flow-root">
+                                                    <div className="flex gap-4 items-center">
+                                                        <Image
+                                                            src={user.image || ProfilePicPlaceholder}
+                                                            alt="Profile picture"
+                                                            width={32}
+                                                            height={32}
+                                                            className="rounded-full w-10 object-cover"
+                                                        />
+                                                        <span className="text-lg font-medium capitalize">
+                                                            {user.name}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="flow-root">
+                                                    <button onClick={() => signOut({ callbackUrl: '/' })} className="-m-2 p-2 block font-medium text-gray-700">
+                                                        Sign out
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )
+                                        :
+                                        <>
+                                            <div className="flow-root">
+                                                <button onClick={() => signIn()} className="-m-2 p-2 block font-medium text-gray-700">
+                                                    Sign in
+                                                </button>
+                                            </div>
+                                            <div className="flow-root">
+                                                <button onClick={() => signIn()} className="-m-2 p-2 block font-medium text-gray-700">
+                                                    Create account
+                                                </button>
+                                            </div>
+                                        </>
+                                }
+
                             </div>
                         </div>
                     </Transition.Child>
@@ -84,4 +119,8 @@ export default function MobileNav() {
             </Transition.Root>
         </>
     )
+}
+
+interface IMobileNavProps {
+    session: Session | null;
 }

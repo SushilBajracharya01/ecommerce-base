@@ -14,37 +14,110 @@ export function generateMetadata({ searchParams: { query } }: ISearchPageProps):
 }
 
 async function getFilteredProductsWithCount({ query, filter_collections, pageSize, currentPage }: IProductFilters) {
-  let collectionQuery = {
-    ...(filter_collections ? { collectionId: { in: filter_collections.split(",") } } : {})
-  }
-  const filter = {
-    where: {
-      OR: [
-        {
-          name: {
-            contains: query,
-            mode: 'insensitive'
-          },
-          ...collectionQuery
+  if (filter_collections) {
+    return await prisma.$transaction([
+      prisma.product.findMany({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: query,
+                mode: 'insensitive'
+              },
+              collectionId: {
+                in: filter_collections.split(',')
+              }
+            },
+            {
+              description: {
+                contains: query,
+                mode: 'insensitive'
+              },
+              collectionId: {
+                in: filter_collections.split(',')
+              }
+            }
+          ]
         },
-        {
-          description: {
-            contains: query,
-            mode: 'insensitive'
-          },
-          ...collectionQuery
+        orderBy: { id: 'desc' },
+        take: pageSize,
+        skip: (currentPage - 1) * pageSize,
+      }),
+      prisma.product.count({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: query,
+                mode: 'insensitive'
+              },
+              collectionId: {
+                in: filter_collections.split(',')
+              }
+            },
+            {
+              description: {
+                contains: query,
+                mode: 'insensitive'
+              },
+              collectionId: {
+                in: filter_collections.split(',')
+              }
+            }
+          ]
         }
-      ]
-    },
-    orderBy: { id: 'desc' },
-    take: pageSize,
-    skip: (currentPage - 1) * pageSize,
-  };
+      })
+    ])
+  }
 
   return await prisma.$transaction([
-    prisma.product.findMany(filter),
-    prisma.product.count({ where: filter.where })
+    prisma.product.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: 'insensitive'
+            }
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive'
+            }
+          }
+        ]
+      },
+      orderBy: { id: 'desc' },
+      take: pageSize,
+      skip: (currentPage - 1) * pageSize,
+    }),
+    prisma.product.count({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: 'insensitive'
+            },
+            collectionId: {
+              in: filter_collections.split(',')
+            }
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive'
+            },
+            collectionId: {
+              in: filter_collections.split(',')
+            }
+          }
+        ]
+      }
+    })
   ])
+
 }
 
 export default async function SearchPage({ searchParams: { query, filter_collections, page = '1' } }: ISearchPageProps) {

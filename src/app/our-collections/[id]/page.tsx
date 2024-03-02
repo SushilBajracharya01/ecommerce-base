@@ -8,17 +8,20 @@ import React from 'react'
 
 
 async function getProductsWithCount({ id, pageSize, currentPage }: IGetProductsWithCount) {
-    const query = {
-        where: {
-            collectionId: id
-        },
-        take: pageSize,
-        orderBy: { id: 'desc' },
-        skip: (currentPage - 1) * pageSize,
-    };
     const res = await prisma.$transaction([
-        prisma.product.findMany(query),
-        prisma.product.count({ where: query.where })
+        prisma.product.findMany({
+            where: {
+                collectionId: id
+            },
+            take: pageSize,
+            orderBy: { id: 'desc' },
+            skip: (currentPage - 1) * pageSize,
+        }),
+        prisma.product.count({
+            where: {
+                collectionId: id
+            },
+        })
     ])
     return res;
 }

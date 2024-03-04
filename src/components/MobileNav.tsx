@@ -5,7 +5,7 @@ import { Fragment, useState } from "react"
 import ProfilePicPlaceholder from '@/assets/profile-pic-placeholder.png';
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
 import Navlink from "./Navlink";
-import { NAVLINKS } from "@/app/Navbar/_data";
+import { NAVLINKS } from "@/app/(shop)/Navbar/_data";
 import { signIn, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import Image from "next/image";

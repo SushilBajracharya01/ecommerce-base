@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "./Navbar/Navbar";
-import SessionProvider from "./SessionProvider";
-import Footer from "./Footer/Footer";
+import "../../globals.css";
+import SessionProvider from "../../SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`min-w-96 ${inter.className}`}>
         <SessionProvider >
-          <Navbar />
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 min-w-[300px]">
             {children}
-          </main>
-          <Footer />
         </SessionProvider>
       </body>
     </html >

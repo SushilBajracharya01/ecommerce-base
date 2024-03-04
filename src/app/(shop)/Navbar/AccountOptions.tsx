@@ -6,6 +6,7 @@ import Image from "next/image";
 import { signIn, signOut } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import Link from "next/link";
 
 export default function AccountOptions({ session }: IAccountOptions) {
     const user = session?.user;
@@ -48,9 +49,9 @@ export default function AccountOptions({ session }: IAccountOptions) {
 
     return (
         <div className="z-10 hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-            <button onClick={() => signIn()} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                 Sign in
-            </button>
+            </Link>
             <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
             <button onClick={() => signIn()} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                 Create account

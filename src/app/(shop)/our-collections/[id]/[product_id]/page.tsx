@@ -6,7 +6,7 @@ import React from 'react'
 import { FaHeart } from 'react-icons/fa'
 import { getProductFromCart, incrementProductQuantity } from './action';
 import ProductQuantityChanger from '@/components/ProductQuantityChanger';
-import { updateProductQuantity } from '@/app/cart/action';
+import { updateProductQuantity } from '@/app/(shop)/cart/action';
 import NextBreadcrumb from '@/components/BreadCrumb';
 import Image from 'next/image';
 import Link from 'next/link';

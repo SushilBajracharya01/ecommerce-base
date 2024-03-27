@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react'
 import InputLabel from './InputLabel'
 import { InputTypes } from '@/types';
 
-export default function Input({ label, name, className, required, type = "text", placeholder, isMulti }: IInputProps) {
+export default function Input({ label, name, className, required, type = "text", placeholder, isMulti , onChange}: IInputProps) {
     return (
         <div>
             {
@@ -21,6 +21,7 @@ export default function Input({ label, name, className, required, type = "text",
                     placeholder={placeholder}
                     required={required}
                     multiple={isMulti}
+                    onChange={(e) => onChange?.(e)}
                 />
             </div>
         </div>
@@ -34,4 +35,5 @@ interface IInputProps {
     required?: boolean;
     placeholder?: string;
     isMulti?: boolean;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }

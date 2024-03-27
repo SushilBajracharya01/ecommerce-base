@@ -5,6 +5,7 @@ import Google from "next-auth/providers/google";
 import { Adapter } from "next-auth/adapters";
 import { env } from "./env";
 import { mergeAnonymousCartIntoUserCart } from "./db/cart";
+import CredentialProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
     // session: {
@@ -12,21 +13,11 @@ export const authOptions: NextAuthOptions = {
     // },
     pages: {
       signIn: "/login",
+      newUser: '/register' 
     },
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
-      // {
-      //   id: 'email',
-      // type: 'email',
-      // from: 'asdf@asdf.ca',
-      // server: {},
-      // maxAge: 24 * 60 * 60,
-      // name: 'Email',
-      // options: {},
-      // sendVerificationRequest: sendVerificationRequest
-      // },
-
-        Google({
+      Google({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
             profile(profile) {

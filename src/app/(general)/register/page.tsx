@@ -8,8 +8,7 @@ import Logo from "@/components/Logo";
 import Image from "next/image";
 import Input from "@/components/Input";
 import FormSubmitButton from "@/components/FormSubmitButton";
-import LoginForm from "@/components/LoginForm";
-import Link from "next/link";
+import RegisterForm from "@/components/RegisterForm";
 
 async function handleLogin(formData: FormData) {
     "use server";
@@ -26,7 +25,7 @@ export default async function page() {
     return (
         <div className="flex h-dvh">
             <div className="flex flex-col py-14 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 flex-1 max-w-lg lg:max-w-none mx-auto">
-                <div className="mx-auto w-full max-w-sm lg:w-96">
+                <div className="w-full lg:min-w-80">
                     <div>
                         <Logo
                             imgClassName="h-20"
@@ -35,18 +34,15 @@ export default async function page() {
                         />
                     </div>
 
-                    <h2 className="my-6 text-3xl font-extrabold text-gray-800">Login</h2>
+                    <h2 className="my-6 text-3xl font-extrabold text-gray-800">Register</h2>
 
-                    <LoginForm />
+                    <RegisterForm 
+                    />
 
                     <h3 className="my-4 text-gray-700 text-center">OR</h3>
 
                     <div>
                         <SignInWithGoogle />
-                    </div>
-
-                    <div className="mt-6 text-xs text-gray-400">
-                        Not registered yet? <Link href={"/register"} className="text-primary font-medium italic">Click here to Register</Link>
                     </div>
                 </div>
             </div>

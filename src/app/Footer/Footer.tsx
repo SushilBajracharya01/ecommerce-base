@@ -51,9 +51,9 @@ export default async function Footer() {
                                     <ul role="list" className="mt-6 space-y-6">
                                         {footerNavigation.company.map((item) => (
                                             <li key={item.name} className="text-sm">
-                                                <a href={item.href} className="text-gray-500 hover:text-primary" target={item.href === "#" ? "_self" : "_blank"}>
+                                                <Link href={item.href} className="text-gray-500 hover:text-primary" target={item.href.includes('http') ? "_blank" : "_self"}>
                                                     {item.name}
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>

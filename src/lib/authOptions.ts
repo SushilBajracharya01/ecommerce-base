@@ -5,11 +5,16 @@ import Google from "next-auth/providers/google";
 import { Adapter } from "next-auth/adapters";
 import { env } from "./env";
 import { mergeAnonymousCartIntoUserCart } from "./db/cart";
-import CredentialProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt"
 
 export const authOptions: NextAuthOptions = {
     // session: {
-    //   strategy: 'jwt'
+    //   strategy: 'jwt',
+    //   maxAge: 1 * 24 * 60 * 60,
+    // },
+    // jwt:{
+
     // },
     pages: {
       signIn: "/login",
@@ -17,6 +22,37 @@ export const authOptions: NextAuthOptions = {
     },
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
+      Credentials({
+        name: "Credentials",
+        credentials: {
+          email: { label: "Email", type: "text", placeholder: "jsmith" },
+          password: { label: "Password", type: "password" }
+        },
+        async authorize(credentials, req) {
+          if(!credentials) {
+            return null;
+          }
+
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials?.email
+            }
+          })
+
+          if (user) {
+            const isPasswordCorrect =await  bcrypt.compare(credentials.password, user.password || "")
+            console.log(isPasswordCorrect, 'isPasswordCorrect', user, 'login');
+            if(isPasswordCorrect) {
+              return {id: user.id, email: user.email, name: user.name, image: user.image};
+            }
+            else{
+              throw new Error('Invalid credentials')
+            }          
+          } else {
+            throw new Error('Invalid credentials')
+          }
+        }
+      }),
       Google({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
@@ -30,7 +66,6 @@ export const authOptions: NextAuthOptions = {
     ], 
     callbacks: {
       async jwt({ token, user }) {
-        // if(user) token.role  = user.role;
         return token;
       },
       session({ session, user }) {

@@ -11,7 +11,6 @@ export default function LoginForm() {
     const handleFormSubmit = async () => {
         try {
             const response = await signIn('credentials', { email, password, redirect: false });
-            // console.log(response, 'response')
             console.log(response, 'youo')
         }
         catch (error) {

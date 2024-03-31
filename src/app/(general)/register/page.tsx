@@ -9,6 +9,7 @@ import Image from "next/image";
 import Input from "@/components/Input";
 import FormSubmitButton from "@/components/FormSubmitButton";
 import RegisterForm from "@/components/RegisterForm";
+import { registerUser } from "@/lib/db/auth";
 
 async function handleLogin(formData: FormData) {
     "use server";
@@ -20,6 +21,18 @@ export default async function page() {
 
     if (session) {
         redirect("/");
+    }
+
+    const handleRegisterUser = async (userData: IUserData) => {
+        "use server"
+        const { name, email, password } = userData;
+        const response = await registerUser({
+            name,
+            email,
+            password
+        });
+
+        console.log(response, 'response')
     }
 
     return (
@@ -36,7 +49,8 @@ export default async function page() {
 
                     <h2 className="my-6 text-3xl font-extrabold text-gray-800">Register</h2>
 
-                    <RegisterForm 
+                    <RegisterForm
+                        handleRegisterUser={handleRegisterUser}
                     />
 
                     <h3 className="my-4 text-gray-700 text-center">OR</h3>
@@ -58,4 +72,10 @@ export default async function page() {
             </div>
         </div>
     )
+}
+
+export interface IUserData {
+    name: string
+    email: string
+    password: string
 }

@@ -2,14 +2,22 @@
 
 import { useState } from "react";
 import Input from "./Input";
+import { registerUser } from "@/lib/db/auth";
+import { IUserData } from "@/app/(general)/register/page";
 
-export default function RegisterForm() {
+export default function RegisterForm({ handleRegisterUser } : IRegisterFormProps) {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleFormSubmit = () => {
-
+        handleRegisterUser({
+            name,
+            email,
+            password
+        })
     }
+
 
     return (
         <div>
@@ -19,7 +27,7 @@ export default function RegisterForm() {
                     name="name"
                     required
                     placeholder="Full Name"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                 />
             </div>
 
@@ -46,8 +54,12 @@ export default function RegisterForm() {
             <button
                 type="button"
                 className="w-full justify-center bg-green-600 text-white py-2 rounded-lg" onClick={handleFormSubmit}>
-                Sign in
+                Register
             </button>
         </div>
     )
+}
+
+interface IRegisterFormProps {
+    handleRegisterUser: (userData: IUserData) => void
 }

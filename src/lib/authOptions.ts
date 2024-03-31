@@ -8,38 +8,12 @@ import { env } from "./env";
 import { mergeAnonymousCartIntoUserCart } from "./db/cart";
 
 export const authOptions: NextAuthOptions = {
-    session: {
-      strategy: 'jwt'
-    },
-    pages: {
-      signIn: "/login",
-    },
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
         Google({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET
         }),
-        // EmailProvider({
-        //   server: {
-        //     server: {
-        //       host: env.EMAIL_SERVER_HOST,
-        //       port: env.EMAIL_SERVER_PORT,
-        //       auth: {
-        //         user: env.EMAIL_SERVER_USER,
-        //         pass: env.EMAIL_SERVER_PASSWORD
-        //       }
-        //     },
-        //   },
-        //   from: env.EMAIL_FROM,
-        //   sendVerificationRequest({
-        //     identifier: email,
-        //     url,
-        //     provider: {server, from},
-        //   }) {
-        //     console.log(email, url, server, from)
-        //   }
-        // })
     ], 
     callbacks: {
       session({ session, user }) {

@@ -5,10 +5,11 @@ import { Fragment, useState } from "react"
 import ProfilePicPlaceholder from '@/assets/profile-pic-placeholder.png';
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
 import Navlink from "./Navlink";
-import { NAVLINKS } from "@/app/Navbar/_data";
+import { NAVLINKS } from "@/app/(shop)/Navbar/_data";
 import { signIn, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function MobileNav({ session }: IMobileNavProps) {
     const user = session?.user;
@@ -100,14 +101,14 @@ export default function MobileNav({ session }: IMobileNavProps) {
                                         :
                                         <>
                                             <div className="flow-root">
-                                                <button onClick={() => signIn()} className="-m-2 p-2 block font-medium text-gray-700">
+                                                <Link href={"/login"} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                     Sign in
-                                                </button>
+                                                </Link>
                                             </div>
                                             <div className="flow-root">
-                                                <button onClick={() => signIn()} className="-m-2 p-2 block font-medium text-gray-700">
+                                                <Link href={"/register"} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                     Create account
-                                                </button>
+                                                </Link>
                                             </div>
                                         </>
                                 }

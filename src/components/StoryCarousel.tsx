@@ -37,8 +37,6 @@ export default function StoryCarousel() {
       <div className="inline-block mx-auto space-x-4">
         {
           data.map((_, index) => {
-            console.log(index, typeof index, typeof active, active, 'dssd')
-
             return (
               <button
                 key={`${active}-${index}`}

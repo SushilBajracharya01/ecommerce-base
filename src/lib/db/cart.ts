@@ -21,7 +21,6 @@ export type ShoppingCart = CartWithProducts & {
 
 export async function getCart(): Promise<ShoppingCart | null> {
     const session = await getServerSession(authOptions);
-
     let cart: CartWithProducts | null = null;
     if(session) {
         cart = await prisma.cart.findFirst({

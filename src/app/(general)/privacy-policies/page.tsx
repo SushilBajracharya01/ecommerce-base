@@ -1,6 +1,9 @@
+import Logo from "@/components/Logo";
+
 export default function PrivacyPoliciesPage() {
     return (
-        <div>
+        <div className='pt-12 pb-12 px-8'>
+                <Logo />
             <header className='py-8'>
                 <h1 className='text-4xl font-semibold text-gray-800'>Privacy Policy</h1>
             </header>

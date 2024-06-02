@@ -1,8 +1,10 @@
+import Logo from '@/components/Logo'
 import React from 'react'
 
 export default function TermsAndConditionsPage() {
     return (
-        <div>
+        <div className='pt-12 pb-12 px-8'>
+                <Logo />
             <header className='py-8'>
                 <h1 className='text-4xl font-semibold text-gray-800'>Terms and Conditions</h1>
             </header>

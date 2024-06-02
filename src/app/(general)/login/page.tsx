@@ -1,24 +1,16 @@
-import SignInWithGoogle from "@/components/SignInWithGoogle";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
-import { signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 import Logo from "@/components/Logo";
 import Image from "next/image";
-import Input from "@/components/Input";
-import FormSubmitButton from "@/components/FormSubmitButton";
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 
-async function handleLogin(formData: FormData) {
-    "use server";
-    signIn('email', { email: formData.get('email'), callbackUrl: '/' })
-}
+import LoginBgImg from '@/assets/loginbg.jpeg';
 
 export default async function page() {
     const session = await getServerSession(authOptions);
-
     if (session) {
         redirect("/");
     }
@@ -39,12 +31,6 @@ export default async function page() {
 
                     <LoginForm />
 
-                    <h3 className="my-4 text-gray-700 text-center">OR</h3>
-
-                    <div>
-                        <SignInWithGoogle />
-                    </div>
-
                     <div className="mt-6 text-xs text-gray-400">
                         Not registered yet? <Link href={"/register"} className="text-primary font-medium italic">Click here to Register</Link>
                     </div>
@@ -54,7 +40,7 @@ export default async function page() {
             <div className="hidden lg:block relative w-0 flex-1">
                 <Image
                     className="absolute inset-0 h-full w-full object-cover"
-                    src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+                    src={LoginBgImg}
                     alt=""
                     width={500}
                     height={800}

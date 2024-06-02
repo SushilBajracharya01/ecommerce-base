@@ -3,7 +3,7 @@
 import { Session } from "next-auth"
 import ProfilePicPlaceholder from '@/assets/profile-pic-placeholder.png';
 import Image from "next/image";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Link from "next/link";

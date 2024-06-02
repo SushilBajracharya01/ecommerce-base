@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Input from "./Input";
-import { registerUser } from "@/lib/db/auth";
 import { IUserData } from "@/app/(general)/register/page";
 
 export default function RegisterForm({ handleRegisterUser } : IRegisterFormProps) {

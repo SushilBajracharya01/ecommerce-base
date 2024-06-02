@@ -6,10 +6,11 @@ import { redirect } from "next/navigation";
 
 import Logo from "@/components/Logo";
 import Image from "next/image";
-import Input from "@/components/Input";
-import FormSubmitButton from "@/components/FormSubmitButton";
 import RegisterForm from "@/components/RegisterForm";
 import { registerUser } from "@/lib/db/auth";
+
+import GirlBgImg from '@/assets/girl.jpeg';
+import Link from "next/link";
 
 async function handleLogin(formData: FormData) {
     "use server";
@@ -31,8 +32,6 @@ export default async function page() {
             email,
             password
         });
-
-        console.log(response, 'response')
     }
 
     return (
@@ -53,10 +52,8 @@ export default async function page() {
                         handleRegisterUser={handleRegisterUser}
                     />
 
-                    <h3 className="my-4 text-gray-700 text-center">OR</h3>
-
-                    <div>
-                        <SignInWithGoogle />
+                    <div className="mt-6 text-xs text-gray-400">
+                        Already a member? <Link href={"/login"} className="text-primary font-medium italic">Click here to Login</Link>
                     </div>
                 </div>
             </div>
@@ -64,7 +61,7 @@ export default async function page() {
             <div className="hidden lg:block relative w-0 flex-1">
                 <Image
                     className="absolute inset-0 h-full w-full object-cover"
-                    src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+                    src={GirlBgImg}
                     alt=""
                     width={500}
                     height={800}

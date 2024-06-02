@@ -12,7 +12,6 @@ export default function CategoryFilterInSearch({ collections, query, page, query
     useEffect(()=>{
         let searchParams = new URLSearchParams();
         if(query) searchParams.append('query', query);
-        console.log(selectedCollections, 'selectedCollections')
         if(selectedCollections) searchParams.append('filter_collections', selectedCollections);
         if(page) searchParams.append('page', page);
 
@@ -23,7 +22,6 @@ export default function CategoryFilterInSearch({ collections, query, page, query
         const collectionId = e.target.value;
         let selectedCollectionsArray = selectedCollections.split(',').filter(Boolean);
         const collectionIdIndex = selectedCollectionsArray.findIndex((id) => id === collectionId);
-        console.log(selectedCollectionsArray, 'selectedCollectionsArray')
         if (collectionIdIndex > -1) {
             selectedCollectionsArray.splice(collectionIdIndex, 1)
             if(selectedCollectionsArray.length) {
@@ -35,7 +33,6 @@ export default function CategoryFilterInSearch({ collections, query, page, query
         } else {
             selectedCollectionsArray.push(collectionId)
             const selectedCollectionIds = selectedCollectionsArray.join(',')
-            console.log(selectedCollectionIds,selectedCollectionsArray, 'selectedCollectionIds')
             setSelectedCollections(selectedCollectionIds);
         }
     }

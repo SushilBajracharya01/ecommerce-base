@@ -2,20 +2,22 @@
 import { signIn } from "next-auth/react";
 import Input from "./Input";
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
+    const router = useRouter()
+
     const [error, setError] = useState<string | null>(null);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleFormSubmit = async () => {
-        try {
-            const response = await signIn('credentials', { email, password, redirect: false });
-            console.log(response, 'youo')
+        const response = await signIn('credentials', { email, password, redirect: false });
+        if (response?.error) {
+           return  setError(response.error);
         }
-        catch (error) {
-            console.log(error, 'errror')
-        }
+
+        router.push("/");
     }
     return (
         <div>

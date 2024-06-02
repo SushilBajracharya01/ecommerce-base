@@ -99,25 +99,18 @@ async function getFilteredProductsWithCount({ query, filter_collections, pageSiz
             name: {
               contains: query,
               mode: 'insensitive'
-            },
-            collectionId: {
-              in: filter_collections.split(',')
             }
           },
           {
             description: {
               contains: query,
               mode: 'insensitive'
-            },
-            collectionId: {
-              in: filter_collections.split(',')
             }
           }
         ]
       }
     })
   ])
-
 }
 
 export default async function SearchPage({ searchParams: { query, filter_collections, page = '1' } }: ISearchPageProps) {

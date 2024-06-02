@@ -9,13 +9,9 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
 
 export const authOptions: NextAuthOptions = {
-    // session: {
-    //   strategy: 'jwt',
-    //   maxAge: 1 * 24 * 60 * 60,
-    // },
-    // jwt:{
-
-    // },
+    session: {
+      strategy: 'jwt',
+    },
     pages: {
       signIn: "/login",
       newUser: '/register' 
@@ -24,56 +20,49 @@ export const authOptions: NextAuthOptions = {
     providers: [
       Credentials({
         name: "Credentials",
-        credentials: {
-          email: { label: "Email", type: "text", placeholder: "jsmith" },
-          password: { label: "Password", type: "password" }
-        },
+        credentials: {},
         async authorize(credentials, req) {
+          const {email, password } = credentials as {
+            email: string;
+            password: string;
+          };
           if(!credentials) {
             return null;
           }
 
           const user = await prisma.user.findUnique({
             where: {
-              email: credentials?.email
+              email: email
             }
           })
 
           if (user) {
-            const isPasswordCorrect =await  bcrypt.compare(credentials.password, user.password || "")
-            console.log(isPasswordCorrect, 'isPasswordCorrect', user, 'login');
+            const isPasswordCorrect = await  bcrypt.compare(password, user.password || "")
             if(isPasswordCorrect) {
               return {id: user.id, email: user.email, name: user.name, image: user.image};
             }
             else{
-              throw new Error('Invalid credentials')
+              throw new Error('Email or password does not match')
             }          
           } else {
-            throw new Error('Invalid credentials')
+            throw new Error('Email or password does not match')
           }
         }
       }),
-      Google({
-            clientId: env.GOOGLE_CLIENT_ID,
-            clientSecret: env.GOOGLE_CLIENT_SECRET,
-            profile(profile) {
-              return {
-                ...profile,
-                id: profile.sub,
-              }
-            }
-        }),
     ], 
     callbacks: {
       async jwt({ token, user }) {
         return token;
       },
-      session({ session, user }) {
-        if (session.user) {
-          session.user.id = user.id;
+      async session({ session, token }) {
+        if (token) {
+          session.user.id = token.sub || "";
+          session.user.name = token.name;
+          session.user.email = token.email;
+          session.user.image = token.picture;
         }
         return session;
-      },
+      }
     },
     events: {
       async signIn({ user }) {

@@ -8,11 +8,17 @@ export interface IProduct {
     images: string[]
 }
 
-export type InputTypes = "email" | "text" | "number" | "file"
+export type InputTypes = "email" | "text" | "number" | "file";
 
 export interface ICollection {
     id: string;
     name: string
     description: string
     coverImage: string
+}
+
+
+export interface IOptions {
+    value: string;
+    label: string;
 }

@@ -65,7 +65,6 @@ export default async function AddCollectionPage() {
                     required
                     placeholder="Name"
                 />
-
                 <TextArea
                     name="description"
                     placeholder="Description"
@@ -77,7 +76,7 @@ export default async function AddCollectionPage() {
                     label="Image"
                     name="coverImage"
                     required
-                />
+                /> 
 
                 <FormSubmitButton
                     className="btn-block">

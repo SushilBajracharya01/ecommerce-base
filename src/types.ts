@@ -8,7 +8,7 @@ export interface IProduct {
     images: string[]
 }
 
-export type InputTypes = "email" | "text" | "number" | "file";
+export type InputTypes = "email" | "text" | "number" | "file" | "password";
 
 export interface ICollection {
     id: string;

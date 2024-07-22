@@ -3,31 +3,48 @@ import { signIn } from "next-auth/react";
 import Input from "./Input";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'
+import {useForm} from 'react-hook-form';
+import { loginFormValidation } from "@/app/validations";
+import {yupResolver} from '@hookform/resolvers/yup';
+import { toast } from 'react-hot-toast';
+import { VscLoading } from "react-icons/vsc";
 
 export default function LoginForm() {
-    const router = useRouter()
+    const router = useRouter();
+    const {
+        register, 
+        formState: { errors },
+        handleSubmit
+    } = useForm({
+        defaultValues: {
+            email: "", 
+            password: ''
+        },
+        resolver: yupResolver(loginFormValidation),
+    });
 
-    const [error, setError] = useState<string | null>(null);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleFormSubmit = async () => {
-        const response = await signIn('credentials', { email, password, redirect: false });
-        if (response?.error) {
-           return  setError(response.error);
+    const handleFormSubmit = async (data:ILoginFormData) => {
+        setIsLoading(true);
+        const response = await signIn('credentials', { ...data, redirect: false });
+        if(response?.error) {
+            setIsLoading(false);
+            return toast.error(response.error);
         }
-
         router.push("/");
     }
+
     return (
-        <div>
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
             <div className="mb-4">
                 <Input
                     label="Email address"
                     name="email"
-                    required
                     placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    register={register}
+                    errors={errors}
+                    disabled={isLoading}
                 />
             </div>
 
@@ -35,17 +52,28 @@ export default function LoginForm() {
                 <Input
                     label="Password"
                     name="password"
-                    required
+                    type="password"
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    register={register}
+                    errors={errors}
+                    disabled={isLoading}
                 />
             </div>
 
             <button
-                type="button"
-                className="w-full justify-center bg-green-600 text-white py-2 rounded-lg" onClick={handleFormSubmit}>
-                Sign in
+                type="submit"
+                className="w-full flex justify-center bg-green-600 text-white py-2 rounded-lg  focus:outline-none"
+                disabled={isLoading}
+                >
+                    {
+                        isLoading ? <VscLoading className="animate-spin my-1" /> :"Sign in"
+                    }
             </button>
-        </div>
+        </form>
     )
+}
+
+interface ILoginFormData {
+    email: string;
+    password: string;
 }

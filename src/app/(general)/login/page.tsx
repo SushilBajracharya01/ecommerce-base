@@ -27,7 +27,8 @@ export default async function page() {
                         />
                     </div>
 
-                    <h2 className="my-6 text-3xl font-extrabold text-gray-800">Login</h2>
+                    <h2 className="mt-6 mb-2 text-3xl font-extrabold text-gray-800">Login</h2>
+                    <p className="mb-6 text-md text-gray-600 leading-tight">Enter your credentials to access your account.</p>
 
                     <LoginForm />
 

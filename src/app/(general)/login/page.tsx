@@ -38,14 +38,19 @@ export default async function page() {
                 </div>
             </div>
 
-            <div className="hidden lg:block relative w-0 flex-1">
+            <div className="hidden lg:block relative w-0 flex-1 overflow-hidden">
                 <Image
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                     src={LoginBgImg}
                     alt=""
                     width={500}
                     height={800}
                 />
+
+
+                <div className="absolute w-full max-w-[400px] mx-8 text-2xl text-center font-semibold p-4 bg-white text-gray-700 rounded-md top-1/2 left-1/2 -translate-x-1/2">
+                    Step into the cool side of fashion with Lionsheart.
+                </div>
             </div>
         </div>
     )

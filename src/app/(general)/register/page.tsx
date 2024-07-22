@@ -17,8 +17,8 @@ export default async function page() {
 
     return (
         <div className="flex h-dvh">
-            <div className="flex flex-col py-14 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 flex-1 max-w-lg lg:max-w-none mx-auto">
-                <div className="w-full lg:min-w-80">
+            <div className="flex flex-1 flex-col py-14 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 max-w-lg lg:max-w-none mx-auto">
+                <div className="w-full lg:min-w-80 max-w-[400px] mx-auto">
                     <div>
                         <Logo
                             imgClassName="h-20"
@@ -39,14 +39,19 @@ export default async function page() {
                 </div>
             </div>
 
-            <div className="hidden lg:block relative w-0 flex-1">
+            <div className="hidden lg:block relative w-0 flex-1 overflow-hidden">
                 <Image
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                     src={GirlBgImg}
                     alt=""
                     width={500}
                     height={800}
                 />
+
+                <div className="absolute w-full max-w-[400px] mx-8 text-2xl text-center font-semibold p-4 bg-white text-gray-700 rounded-md top-1/2 left-1/2 -translate-x-1/2">
+                Unleash your inner lion with Lionsheart clothing
+                </div>
+
             </div>
         </div>
     )

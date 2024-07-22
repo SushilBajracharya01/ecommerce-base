@@ -8,15 +8,31 @@ export async function registerUser (userData: IUserData) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // check for dublicate
+    const dublicate = await prisma.user.findFirst({
+        where: {
+            email: email
+        }
+    })
+
+    if(dublicate) return {message: "User with this email already exists", status: 400, success: false};
+
     const response = await prisma.user.create({
         data: {
             name: name,
             email: email,
             password: hashedPassword
+        },
+        select:{
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            emailVerified: true
         }
     })
 
-    return response;
+    return {data: response, message: "User info", status: 200, success: true};
 }
 
 

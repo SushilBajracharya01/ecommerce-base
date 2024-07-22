@@ -1,37 +1,18 @@
-import SignInWithGoogle from "@/components/SignInWithGoogle";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
-import { signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 import Logo from "@/components/Logo";
 import Image from "next/image";
 import RegisterForm from "@/components/RegisterForm";
-import { registerUser } from "@/lib/db/auth";
 
 import GirlBgImg from '@/assets/girl.jpeg';
 import Link from "next/link";
 
-async function handleLogin(formData: FormData) {
-    "use server";
-    signIn('email', { email: formData.get('email'), callbackUrl: '/' })
-}
-
 export default async function page() {
     const session = await getServerSession(authOptions);
-
     if (session) {
         redirect("/");
-    }
-
-    const handleRegisterUser = async (userData: IUserData) => {
-        "use server"
-        const { name, email, password } = userData;
-        const response = await registerUser({
-            name,
-            email,
-            password
-        });
     }
 
     return (
@@ -46,10 +27,10 @@ export default async function page() {
                         />
                     </div>
 
-                    <h2 className="my-6 text-3xl font-extrabold text-gray-800">Register</h2>
-
+                    <h2 className="mt-6 mb-2 text-3xl font-extrabold text-gray-800">Register</h2>
+                    <p className="mb-6 text-md text-gray-600 leading-tight">Welcome to Lionsheart. Enter your details to start your journey.</p>
+                    
                     <RegisterForm
-                        handleRegisterUser={handleRegisterUser}
                     />
 
                     <div className="mt-6 text-xs text-gray-400">

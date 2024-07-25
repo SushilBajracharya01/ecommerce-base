@@ -8,6 +8,7 @@ import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 
 import LoginBgImg from '@/assets/loginbg.jpeg';
+import AuthProviders from "@/components/AuthProviders";
 
 export default async function page() {
     const session = await getServerSession(authOptions);
@@ -31,6 +32,9 @@ export default async function page() {
                     <p className="mb-6 text-md text-gray-600 leading-tight">Enter your credentials to access your account.</p>
 
                     <LoginForm />
+
+                    <div className="py-6 text-center">OR</div>
+<AuthProviders />
 
                     <div className="mt-6 text-xs text-gray-400">
                         Not registered yet? <Link href={"/register"} className="text-primary font-medium italic">Click here to Register</Link>

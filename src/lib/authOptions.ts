@@ -1,6 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./db/prisma";
-import { NextAuthOptions } from "next-auth";
+import { getServerSession, NextAuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 import { Adapter } from "next-auth/adapters";
 import { env } from "./env";
@@ -11,6 +11,7 @@ import bcrypt from "bcrypt"
 export const authOptions: NextAuthOptions = {
     session: {
       strategy: 'jwt',
+      maxAge: 1 *24 * 60 *60
     },
     pages: {
       signIn: "/login",
@@ -18,6 +19,10 @@ export const authOptions: NextAuthOptions = {
     },
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
+      Google({
+        clientId: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+      }),
       Credentials({
         name: "Credentials",
         credentials: {},
@@ -70,3 +75,5 @@ export const authOptions: NextAuthOptions = {
       },
     },
 }
+
+export const getAuth = () => getServerSession(authOptions)
